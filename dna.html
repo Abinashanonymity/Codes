@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<style>
+	body {
+margin:0px;
+background:black;
+}
+	</style>
+        <title>ABINASH</title>
+    </head>
+    <body>
+    
+    
+    <canvas id = "c"></canvas>
+    
+     <script>
+	 
+	 var message = "function disabled";
+
+function rtclickcheck(keyp){ if (navigator.appName == "Netscape" && keyp.which == 3){ alert(message); return false; }
+
+if (navigator.appVersion.indexOf("MSIE") != -1 && event.button == 2) { alert(message); return false; } }
+
+document.onmousedown = rtclickcheck;
+
+
+    
+   //Canvas setup     
+   ctx = document.getElementById("c").
+   getContext("2d");
+   w = ctx.canvas.width = window.innerWidth;
+   h = ctx.canvas.height = window.innerHeight;
+   
+   var incan = 0;
+   
+   function Dna(move,inc,posY,rad,col,col2,size){
+   
+   //Dna object setup
+   this.move = move;
+   this.inc = inc;
+   this.posY = posY;
+   this.rad = rad;
+   this.col = col;
+   this.col2 = col2;
+   this.size=size;
+   
+   //Base pairs
+   this.base = function(color,px,py,mc,wd){
+       
+   ctx.fillStyle = color;
+   ctx.fillRect(px,py,mc,wd); 
+   ctx.beginPath();
+       
+   }
+   
+   //Sugar phosphate
+   this.back = function(color,rd,py,sz,sp,pi){
+       
+   ctx.fillStyle = color;
+   ctx.arc(rd,py,sz,sp,pi);    
+   ctx.fill(); 
+   ctx.beginPath();
+       
+   }
+   
+   this.frame = function(){
+
+   //Centre each frame on canvas
+   ctx.save();
+   ctx.translate(w/2,h/4.5);
+   
+  this.base("silver",0,this.posY,Math.cos(this.move+this.rad)*42,1);
+  
+  this.base(this.col,0,this.posY,-Math.cos(this.move+this.rad)*42,1);
+  
+this.back(this.col2,Math.cos(this.move+this.rad)*42,this.posY,size,0,Math.PI*2);
+  
+this.back(this.col,Math.cos(this.move+this.rad)*42,this.posY,this.size-1,0,Math.PI*0.6);
+   
+this.back(this.col2,-Math.cos(this.move+this.rad)*42,this.posY,this.size,0,Math.PI*2);
+
+this.back(this.col,-Math.cos(this.move+this.rad)*42,this.posY,this.size-1,0,Math.PI*0.6);
+   
+ctx.restore();
+
+this.move+=this.inc; }}
+ 
+       rad2 = 0;
+       bd = 0;
+       arr = [];
+       sig=true;
+   
+   //objects
+   for(i=0;i<32;++i){
+   
+       rad2+=9;
+       bd+=0.3;
+       radin=0.8;
+       
+arr.push(new Dna(0,0.02,rad2,bd,"white",i%2==0?"blue":"red",4));}
+ 
+   //Draw frames
+   function emit(){
+ 
+   ctx.save(); 
+   ctx.globalAlpha = 0.6;
+   ctx.fillStyle = "black";
+   ctx.fillRect(0,0,w,h);
+   ctx.fill();
+   ctx.restore();
+   
+   
+   if(sig==false){
+   incan+=0.25;
+   ctx.canvas.style.transform = "rotate("+incan+"deg)";}
+ 
+   if(sig==true){
+   ctx.fillStyle = "grey";
+   ctx.font = "100 oblique 14px Arial";
+   ctx.fillText("Creator ABINASH",w/2-45,-60+h);
+   ctx.fillStyle = "aqua";
+   ctx.fillText("Tap Screen to change structure",w/2-90,-85+h);
+   ctx.beginPath();
+   }
+  
+   for(var i=0; i<arr.length;++i){
+   
+   arr[i].frame();
+   arr[i].rad = i/3*radin;}}  
+   setInterval(emit,0);
+   
+   onclick = function incp(){
+   radin+=0.1;
+   sig=false;
+       
+   }
+   
+   
+   
+   //D_Stark 12/12/2018
+    </script>
+    
+        
+    </body>
+</html>

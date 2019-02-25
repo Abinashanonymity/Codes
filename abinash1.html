@@ -1,0 +1,127 @@
+<!--Designed By HACKYABINASH-->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #262626;
+}
+ul {
+   position:absolute ;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  margin: 0;
+  padding: 0;
+  display:flex;
+}
+ul li {
+  list-style: none;
+  font-family: Arial Rounded MT Bold;
+  font-size: 80px;
+  letter-spacing: 15px;
+  text-shadow: none;
+  animation: sj 1s infinite linear
+}
+@keyframes sj
+{
+  0%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+  15%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+  20%
+  {
+    color: #fff900;
+    text-shadow: 0 0 7px #fff900 , 0 0 20px #ff6c00;
+  }
+  30%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+  45%
+  {
+    color: #fff900;
+    text-shadow: 0 0 7px #fff900 , 0 0 20px #ff6c00;
+  }
+  70%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+  85%
+  {
+    color: #fff900;
+    text-shadow: 0 0 7px #fff900 , 0 0 20px #ff6c00;
+  }
+  90%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+  100%
+  {
+    color: #484848;
+    text-shadow: none;
+  }
+}
+ul li:nth-child(1)
+{
+  animation-delay: .2s;
+}
+ul li:nth-child(2)
+{
+  animation-delay: .4s;
+}
+ul li:nth-child(3)
+{
+  animation-delay: .6s;
+}
+ul li:nth-child(4)
+{
+  animation-delay: .8s;
+}
+ul li:nth-child(5)
+{
+  animation-delay: 1s;
+}
+ul li:nth-child(6)
+{
+  animation-delay: 1.2s;
+}
+</style>
+  <title>HACKYABINASH</title>
+</head>
+<body>
+  <ul>
+    <li>A</li>
+    <li>B</li>
+    <li>I</li>
+    <li>N</li>
+    <li>A</li>
+    <li>S</li>
+	<li>H</li>
+  </ul>
+  <script>
+  alert ("Created by HAcky Abinash");
+  
+  var message = "function disabled";
+
+function rtclickcheck(keyp){ if (navigator.appName == "Netscape" && keyp.which == 3){ alert(message); return false; }
+
+if (navigator.appVersion.indexOf("MSIE") != -1 && event.button == 2) { alert(message); return false; } }
+
+document.onmousedown = rtclickcheck;
+
+
+  </script>
+</body>
+</html>

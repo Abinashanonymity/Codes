@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<style>
+	body {
+    margin: 0;
+    background-color: #143737;
+}
+
+canvas {
+    position: absolute;
+}
+	</style>
+        <title>Abinash</title>
+    </head>
+    <body>
+	<script>
+	var W, H, V, ctx;
+
+function project() {
+  var x, y, z, a = arguments;
+  if(a.length == 3) { x = a[0]; y = a[1]; z = a[2] }
+  else { x = a[0].x; y = a[0].y; z = a[0].z }
+  var xx = W/2 - V/2*x/(z-2);
+  var yy = H/2 + V/2*y/(z-2);
+  return {x:xx, y:yy};
+}
+
+var box = {
+  w: NaN,
+  draw: function() {
+    ctx.beginPath();
+    var a = [-1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, -1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, 1, 1, -1, 1, -1];
+    for(var i = 0; i < a.length; i += 3) {
+      var p = project(a[i], a[i+1], a[i+2]);
+      ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+}
+
+function Ball() {
+  this.x = Math.random()-0.5;
+  this.vx = Math.random()-0.5;
+  this.y = Math.random()-0.5;
+  this.vy = Math.random()-0.5;
+  this.z = Math.random()-0.5;
+  this.vz = Math.random()-0.5;
+  this.ax = 0; this.ay = -1; this.az = 0;
+}
+
+Ball.prototype.update = function(dt) {
+  this.x += (this.vx += this.ax*dt)*dt;
+  this.y += (this.vy += this.ay*dt)*dt;
+  this.z += (this.vz += this.az*dt)*dt;
+  if(this.x <= -1) this.vx = Math.abs(this.vx);
+  if(this.x >=  1) this.vx =-Math.abs(this.vx);
+  if(this.y <= -1) this.vy = Math.abs(this.vy);
+  if(this.y >=  1) this.vy =-Math.abs(this.vy);
+  if(this.z <= -1) this.vz = Math.abs(this.vz);
+  if(this.z >=  1) this.vz =-Math.abs(this.vz);
+}
+
+Ball.prototype.draw = function() {
+  var p = project(this);
+  var r = 0.1*V/2/(2-this.z);
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, Math.abs(r), 0, 2*Math.PI);
+  ctx.fill();
+  ctx.stroke();
+}
+
+var balls = [];
+window.onload = function() {
+  var canvas = document.querySelector('canvas');
+  canvas.width = W = window.innerWidth;
+  canvas.height = H = window.innerHeight;
+  ctx = canvas.getContext('2d');
+  V = Math.min(W, H);
+  ctx.strokeStyle = 'white';
+  ctx.fillStyle = '#143737';
+  
+  for(var i = 0; i < 30; i++)
+    balls[i] = new Ball();
+  
+  animate();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  
+  box.draw();
+  for(var i = 0; i < balls.length; i++)
+    balls[i].update(1/60);
+  
+  balls.sort(function(a, b) {
+    return a.z - b.z;
+  });
+  
+  for(var i = 0; i < balls.length; i++)
+    balls[i].draw();
+  
+  window.requestAnimationFrame(animate);
+}
+
+var message = "function disabled";
+
+function rtclickcheck(keyp){ if (navigator.appName == "Netscape" && keyp.which == 3){ alert(message); return false; }
+
+if (navigator.appVersion.indexOf("MSIE") != -1 && event.button == 2) { alert(message); return false; } }
+
+document.onmousedown = rtclickcheck;
+
+
+	</script>
+        <canvas></canvas>
+    </body>
+</html>

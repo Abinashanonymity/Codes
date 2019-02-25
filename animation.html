@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<style>
+	
+	body {
+margin:0px;
+background:black;
+}
+	</style>
+        <title>HackyAbinash</title>
+    </head>
+    <body>
+    
+              
+    <audio id = "sound">
+    <source src = "http://www.pacdv.com/sounds/interface_sound_effects/sound38.mp3"></audio>
+    
+    
+      <audio id = "sound2">
+    <source src = "http://www.pacdv.com/sounds/interface_sound_effects/sound72.wav"></audio>
+    
+    
+    
+    
+    
+    
+    <canvas id = "c"></canvas>
+	
+	<script>
+	
+	   
+  
+   window.onload = function atom(){
+    
+   //setup   
+   ctx=document.getElementById("c").
+   getContext("2d");
+   snd = document.getElementById("sound") ;
+   snd2 = document.getElementById("sound2") ;
+   w=ctx.canvas.width = window.innerWidth;
+   h= ctx.canvas.height = window.innerHeight;
+   radius=2;
+   r = 0;
+   inc = 0.3;
+   pulse = 0;
+   pulse2 = 106;
+   orb = 100;
+   orbi=0;
+   obl1="rgb(30,25,220)";
+   obl2 = "rgb(250,30,100)";
+   obl3 = "rgb(30,20,120)";
+   sig =1;
+   start=false;  
+   sw=false;
+       
+ 
+   //sound 
+   function x(){
+   
+   if(sw==false){
+   snd.play();sw=true}
+   
+   else{
+   snd2.play();}
+   }    
+   
+   onclick = function rcol(){ sig++;start++;
+   x();
+   
+   //trigger on pulse animation stop/reset/wait
+   if(pulse2==106){
+   pulse=0;
+   opp();
+   arr = [0,0,0];
+   //Random colours for onclick
+   for(i=0;i<3;++i){
+   rn = 50+Math.floor(Math.random()*200);
+   arr[i]=rn;}
+   obl1="rgb("+arr[0]+","+arr[1]+","+arr[2]+")"; 
+   arr1 = [0,0,0];
+  
+   for(i=0;i<3;++i){
+   rn = 50+Math.floor(Math.random()*200);
+   arr1[i]=rn;}
+   obl2="rgb("+arr1[0]+","+arr1[1]+","+arr1[2]+")";
+   arr2 = [0,0,0];
+   
+   for(i=0;i<3;++i){
+   rn = 50+Math.floor(Math.random()*200);
+   arr2[i]=rn;}
+   obl3="rgb("+arr2[0]+","+arr2[1]+","+arr2[2]+")";
+   }}
+   
+   function opp(){
+   
+   ctx.save();
+   ctx.translate(w/2,h/2);
+  /* ctx.strokeStyle = obl1;
+   ctx.arc(0,0,0+pulse2,0,Math.PI*2);
+   ctx.stroke();*/
+   ctx.beginPath();
+   
+   
+   if(sig==2){
+   ctx.strokeStyle = obl3;
+   ctx.arc(0,0,pulse2*3,pulse*r,Math.PI*2);
+   ctx.stroke();
+   ctx.beginPath();
+   }
+   
+   else{
+   
+   ctx.strokeStyle = obl3;
+   ctx.arc(0,0,pulse2,pulse*r,Math.PI*2);
+   ctx.stroke();
+   ctx.beginPath();}
+   
+   ctx.restore();
+   
+   if(pulse2<2){
+   
+   pulse2=106;
+   return
+   }
+   
+   pulse2+=-3;
+   requestAnimationFrame(opp);
+   ;}
+   
+   function arc(r){
+  
+   ctx.arc(0,0,r,0,Math.PI*2);  
+   ctx.fill();
+   ctx.beginPath();
+   }
+   function ani(l,u,r){
+  
+   ctx.arc(l,u,r,0,Math.PI*2);
+   ctx.fill();
+   ctx.beginPath();
+   }
+   function col(c){
+  
+   ctx.fillStyle=c;    
+   }
+   //electrons positioning
+   
+   function orbs(s){
+  
+   if(s==false){     
+  
+   col(obl1);
+   ani(-Math.sin(r)*100,Math.cos(r)*orb,radius);
+   col(obl2)
+   ani(Math.cos(r)*100,-Math.sin(r)*orb,radius/1.8);
+ 
+   //electron orb ring
+   ctx.strokeStyle= obl3;
+   ctx.arc(-Math.sin(r)*100,Math.cos(r)*orb,radius*2.5,0,Math.PI*2);
+   ctx.stroke();
+   ctx.beginPath();}  
+   
+   else{
+  
+   col(obl1);
+   ani(Math.sin(r)*100,-Math.cos(r)*orb,radius);
+   col(obl2);
+   ani(-Math.cos(r)*100,Math.sin(r)*orb,radius/1.8); 
+  
+   //electron orb ring
+   ctx.strokeStyle= obl3;
+   ctx.arc(Math.sin(r)*100,-Math.cos(r)*orb,radius*2.5,0,Math.PI*2);
+   ctx.stroke();
+   ctx.beginPath();
+   
+     
+   }}
+   function animate(){
+  
+   //clear canvas / globalAlpha opacity
+   ctx.save(); 
+   ctx.globalAlpha = 0.05;
+   ctx.fillStyle = "black";
+   ctx.fillRect(0,0,w,h);
+   ctx.fill();
+   ctx.restore();
+   
+   //translate canvas 00
+   ctx.save()
+   ctx.translate(w/2,h/2);
+ 
+   //center nucleus
+   ctx.fillStyle = obl1;
+   arc(radius*5);
+   col(obl3);
+   arc(radius*3.8);
+   
+   ctx.fillStyle ="white"
+   arc(radius*3);
+  
+   //pulse
+   if(pulse < 0 || pulse >30){
+   pulse=0.1;}
+   
+   if(start==true){
+   orb=40;}
+   
+   
+   pulse+=inc;
+   ctx.strokeStyle = obl1;
+   ctx.arc(0,0,0+pulse,0,Math.PI*2);
+   ctx.stroke();
+   ctx.beginPath();
+  
+   //centre electron
+   orbs(1);
+   ctx.restore();
+  
+   //move canvas & rotate, restore
+   ctx.save();
+   ctx.translate(w/2,h/2);
+   ctx.rotate(Math.PI/Math.PI); 
+  
+   //left>^right electron
+   orbs(0);
+   ctx.restore();
+  
+   // move canvas & rotate, restore
+   ctx.save();
+   ctx.translate(w/2,h/2);
+   ctx.rotate(Math.PI/-Math.PI);
+  
+   //right>vleft electron
+   orbs(0);
+   ctx.restore();
+   
+   r+=0.03;++orbi;
+  
+   //sig
+   if(sig==true){
+   ctx.fillStyle = "grey";
+   ctx.font = "100 oblique 14px Arial";
+   ctx.fillText("Creator HackyAbinash",w/2-45,-60+h);
+   ctx.fillStyle = "lime";
+   ctx.fillText("Tap Screen",w/2-31,-80+h);}
+   ctx.beginPath();
+   }
+   
+   setInterval(animate,13);
+    
+   
+   //D_Stark 03/12/2018
+          
+    
+}
+
+var message = "function disabled";
+
+function rtclickcheck(keyp){ if (navigator.appName == "Netscape" && keyp.which == 3){ alert(message); return false; }
+
+if (navigator.appVersion.indexOf("MSIE") != -1 && event.button == 2) { alert(message); return false; } }
+
+document.onmousedown = rtclickcheck;
+
+
+	</script>
+
+    </body>
+    
+    </html>
